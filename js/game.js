@@ -10,9 +10,14 @@ import SplashScene from "./splashScene.js";
 // Link to titleScene.js
 import TitleScene from "./titleScene.js";
 
+// Link to titleScene.js
+import MenuScene from "./menuScene.js";
+
 // Creating constant for game scenes
 const splashScene = new SplashScene()
 const titleScene = new TitleScene()
+const menuScene = new MenuScene()
+
 
 //*Game scene */
 const config = {
@@ -44,6 +49,7 @@ const game = new Phaser.Game(config)
 // NOTE: remember a "key" is a global and CAN NOT be re-used
 game.scene.add('splashScene', splashScene)
 game.scene.add('titleScene', titleScene)
+game.scene.add('menuScene', menuScene)
 
 // Starting Scene
 game.scene.start('splashScene')
