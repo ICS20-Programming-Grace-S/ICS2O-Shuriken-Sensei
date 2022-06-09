@@ -5,18 +5,22 @@
 // This file contains the JS functions for index.html
 
 // Link to splashScene.js
-import SplashScene from "./splashScene.js";
+import SplashScene from './splashScene.js';
 
 // Link to titleScene.js
-import TitleScene from "./titleScene.js";
+import TitleScene from './titleScene.js';
 
 // Link to titleScene.js
-import MenuScene from "./menuScene.js";
+import MenuScene from './menuScene.js';
+
+// Link to gameScene.js
+import GameScene from './gameScene.js';
 
 // Creating constant for game scenes
 const splashScene = new SplashScene()
 const titleScene = new TitleScene()
 const menuScene = new MenuScene()
+const gameScene = new GameScene()
 
 
 //*Game scene */
@@ -35,7 +39,7 @@ const config = {
   backgroundColor: 0x5f6e7a,
 
   // Sets the Scale of Background Depending on Screen Size
-  scale: {
+ scale: {
     mode: Phaser.Scale.FIT,
     
     // Centers the background to the Middle of the Page
@@ -50,6 +54,8 @@ const game = new Phaser.Game(config)
 game.scene.add('splashScene', splashScene)
 game.scene.add('titleScene', titleScene)
 game.scene.add('menuScene', menuScene)
+game.scene.add('gameScene', gameScene)
+
 
 // Starting Scene
 game.scene.start('splashScene')
