@@ -17,6 +17,7 @@ class GameScene extends Phaser.Scene {
     this.alienGroup.add(anAlien)
   }
 
+  
   constructor () {
     super({ key: 'gameScene' })
 
@@ -38,7 +39,7 @@ class GameScene extends Phaser.Scene {
     console.log('Game Scene')
 
     // images
-    this.load.image('starBackground', 'images/starBackground.png')
+    this.load.image('starBackground', 'images/star_background1.avif')
     this.load.image('ship', 'images/spaceShip.png')
     this.load.image('missile', 'images/missile.png')
     this.load.image('alien', 'images/alien.png')
@@ -46,11 +47,10 @@ class GameScene extends Phaser.Scene {
     // sounds
     this.load.audio('laser', 'sounds/laser1.wav')
     this.load.audio('explosion', 'sounds/barrelExploding.wav')
-    this.load.audio('bomb', 'sounds/bomb.wav')
   }
 
   create (data) {
-    this.background = this.add.image(0, 0, 'starBackground').setScale(2.0)
+    this.background = this.add.image(0, 0, 'starBackground').setScale(4.0)
     this.background.setOrigin(0, 0)
 
     this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship')
@@ -61,6 +61,15 @@ class GameScene extends Phaser.Scene {
     // create a group for the aliens
     this.alienGroup = this.add.group()
     this.createAlien()
+
+    //Collisions between missiles and aliens
+    this.physics.add.collider(this.missileGroup, this.alienGroup, function (missileColllide, alienCollide) {
+      alienCollide.destroy()
+      missileColllide.destroy()
+      this.sound.play('explosion')
+      this.createAlien()
+      this.createAlien()
+    }.bind(this))
   }
 
   update (time, delta) {
@@ -72,14 +81,14 @@ class GameScene extends Phaser.Scene {
     if (keyLeftObj.isDown === true) {
       this.ship.x -= 15
       if (this.ship.x < 0) {
-        this.ship.x = 0
+        this.ship.x = 1920
       }
     }
 
     if (keyRightObj.isDown === true) {
       this.ship.x += 15
       if (this.ship.x > 1920) {
-        this.ship.x = 1920
+        this.ship.x = 0
       }
     }
     if (keySpaceObj.isDown === true) {
@@ -99,7 +108,7 @@ class GameScene extends Phaser.Scene {
 
     this.missileGroup.children.each(function (item) {
       item.y = item.y - 15
-      if (item.y < 50) {
+      if (item.y < 0) {
         item.destroy()
       }
     })

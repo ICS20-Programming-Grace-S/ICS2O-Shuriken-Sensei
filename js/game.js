@@ -46,7 +46,8 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH
   }
 }
-
+  
+// Creates Constant for Phaser.Game(config)
 const game = new Phaser.Game(config)
 
 // Loading Scenes
