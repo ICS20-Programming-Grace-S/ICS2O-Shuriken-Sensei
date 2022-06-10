@@ -1,4 +1,4 @@
-/* global Phaser */
+ /* global Phaser */
 
 // Created by: Mr. Coxall
 // Created on: April 2022
@@ -13,7 +13,7 @@ class SplashScene extends Phaser.Scene {
 
 // Sets Splash Scene Background Colour (Black)
   init (data) {
-    this.cameras.main.setBackgroundColor('#000000')
+    this.cameras.main.setBackgroundColor('#284fc8')
   }
 
   // Gets the Splash Scene image from assets folder

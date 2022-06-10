@@ -33,17 +33,17 @@ class TitleScene extends Phaser.Scene {
     console.log('Title Scene')
 
     //image
-    this.load.image('titleSceneBackground', 'images/aliens_screen_image.jpg')
+    this.load.image('titleSceneBackground', 'images/strangerThingsbackground.webp')
   }
   
   // Creates the image that is being loaded
     create (data) {
-    this.titleSceneBackgroundImage = this.add.sprite(0, 0, 'titleSceneBackground').setScale(2.75)
+    this.titleSceneBackgroundImage = this.add.sprite(0, 0, 'titleSceneBackground')
     this.titleSceneBackgroundImage.x = 1920 / 2
     this.titleSceneBackgroundImage.y = 1080 / 2
 
      //title scene on screen text
-    this.titleSceneText = this.add.text(1920 / 2, (1080 / 2) + 350, 'Space Aliens', this.titleSceneTextStyle).setOrigin(0.5)
+    this.titleSceneText = this.add.text(1920 / 2, (1080 / 2) + 350, 'The Upside Down', this.titleSceneTextStyle).setOrigin(0.5)
     }
       
   //Switches the title scene over to the menu scene

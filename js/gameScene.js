@@ -35,7 +35,7 @@ class GameScene extends Phaser.Scene {
     console.log('Game Scene')
 
     // Loads Background Image
-    this.load.image('starBackground', 'images/star_background1.jpg')
+    this.load.image('upsideDownBackground', 'images/theupsidedown.jpg')
 
     // Loads Ship Image
     this.load.image('ship', 'images/spaceShip.png')
@@ -56,7 +56,7 @@ class GameScene extends Phaser.Scene {
   // Creates the Data
   create (data) {
     // Creates the Background for gameScene
-    this.background = this.add.image(0, 0, 'starBackground').setScale(4.0)
+    this.background = this.add.image(0, 0, 'upsideDownBackground')
 
     // Positions the Background Image for gameScene to Take Up Screen
     this.background.setOrigin(0, 0)
