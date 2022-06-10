@@ -37,16 +37,16 @@ const config = {
   
   // Sets Background Colour
   backgroundColor: 0x5f6e7a,
-
+  
   // Sets the Scale of Background Depending on Screen Size
- scale: {
+  scale: {
     mode: Phaser.Scale.FIT,
     
     // Centers the background to the Middle of the Page
     autoCenter: Phaser.Scale.CENTER_BOTH
   }
 }
-  
+
 // Creates Constant for Phaser.Game(config)
 const game = new Phaser.Game(config)
 
@@ -56,7 +56,6 @@ game.scene.add('splashScene', splashScene)
 game.scene.add('titleScene', titleScene)
 game.scene.add('menuScene', menuScene)
 game.scene.add('gameScene', gameScene)
-
 
 // Starting Scene
 game.scene.start('splashScene')

@@ -10,11 +10,14 @@ class MenuScene extends Phaser.Scene {
   constructor () {
     super({key: 'menuScene'})
 
+    // Initializing Menu Scene Background Image
     this.menuSceneBackgroundImage = null
+
+    // Initializing Start Button
     this.startButton = null
   }
   
-  // Initializing Background Colour
+  // Initializing Background Colour (White)
   init (data) {
     this.cameras.main.setBackgroundColor('#ffffff')
   }

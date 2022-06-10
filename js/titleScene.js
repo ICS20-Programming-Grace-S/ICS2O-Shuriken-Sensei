@@ -6,16 +6,24 @@
 
 // This is the title scene
 
+// Extends to Phaser.Scene
 class TitleScene extends Phaser.Scene {
+
+  //Constructor
   constructor () {
     super({ key: 'titleScene' })
 
+    // Initializing Title Scene Background Image 
     this.titleSceneBackgroundImage = null
+
+    // Initializing Title Scene Text
     this.titleSceneText = null
+
+    // Intializing Title Scene Style for Text
     this.titleSceneTextStyle = { font: '200px Times', fill: '#fde4b9', align: 'center' }
   }
   
-  // Initializing Background Colour
+  // Initializing Background Colour (White)
   init (data) {
     this.cameras.main.setBackgroundColor('#ffffff')
   }
