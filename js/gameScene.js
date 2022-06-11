@@ -9,7 +9,7 @@
 // Extends code to Phaser.Scene
 class GameScene extends Phaser.Scene {
 
-  // Creates an alien enemy 
+  // create an alien
   createAlien () {
     const alienXLocation = Math.floor(Math.random() * 1920) + 1 // this will get a number between 1 and 1920;
     let alienXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50;
@@ -20,141 +20,111 @@ class GameScene extends Phaser.Scene {
     this.alienGroup.add(anAlien)
   }
 
-  // Runs Phaser
   constructor () {
     super({ key: 'gameScene' })
+
+    this.ship = null
+    this.fireMissile = false
+    this.score = 0
+    this.scoreText = null
+    this.scoreTextStyle = { font: '65px Arial', fill: '#ffffff', align: 'center' }
+
+    this.gameOverText = null
+    this.gameOverTextStyle = { font: '65px Arial', fill: '#ff0000', align: 'center' }
   }
 
-  // Initializing background colour
   init (data) {
     this.cameras.main.setBackgroundColor('#0x5f6e7a')
   }
 
-  //Loads Images
   preload () {
     console.log('Game Scene')
 
-    // Loads Background Image
-    this.load.image('upsideDownBackground', 'images/theupsidedown.jpg')
-
-    // Loads Ship Image
+    // images
+    this.load.image('starBackground', 'images/starBackground.png')
     this.load.image('ship', 'images/spaceShip.png')
-
-    // Loads Missile Image
     this.load.image('missile', 'images/missile.png')
-
-    // Loads Alien Image
     this.load.image('alien', 'images/alien.png')
-    
-    // Loads Laser Sound
+    // sound
     this.load.audio('laser', 'sounds/laser1.wav')
-
-  // Loads Explosion Sound
     this.load.audio('explosion', 'sounds/barrelExploding.wav')
+    this.load.audio('bomb', 'sounds/bomb.wav')
   }
 
-  // Creates the Data
   create (data) {
-    // Creates the Background for gameScene
-    this.background = this.add.image(0, 0, 'upsideDownBackground')
-
-    // Positions the Background Image for gameScene to Take Up Screen
+    this.background = this.add.image(0, 0, 'starBackground').setScale(2.0)
     this.background.setOrigin(0, 0)
 
-    // Displays Ship 
+    this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
+
     this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship')
 
-    // Creates a Group for The Missiles
+    // create a group for the missiles
     this.missileGroup = this.physics.add.group()
 
-    // Create a Group for The Aliens
+    // create a group for the aliens
     this.alienGroup = this.add.group()
     this.createAlien()
 
-    // Collisions Between Missiles and Aliens
-    this.physics.add.collider(this.missileGroup, this.alienGroup, function (missileColllide, alienCollide) {
-
-      // When Alien and Missile Collide They get Destroyed
+    // Collisions between missiles and aliens
+    this.physics.add.collider(this.missileGroup, this.alienGroup, function (missileCollide, alienCollide) {
       alienCollide.destroy()
-      missileColllide.destroy()
-
-      // Plays Explosion Sound When They Get Destroyed
+      missileCollide.destroy()
       this.sound.play('explosion')
-
-      // Creates Two New Aliens After You Destroy One Alien
+      this.score = this.score + 1
+      this.scoreText.setText('Score: ' + this.score.toString())
       this.createAlien()
       this.createAlien()
     }.bind(this))
+
+    // Collisions between ship and aliens
+    this.physics.add.collider(this.ship, this.alienGroup, function (shipCollide, alienCollide) {
+      this.sound.play('bomb')
+      this.physics.pause()
+      alienCollide.destroy()
+      shipCollide.destroy()
+      this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
+      this.gameOverText.setInteractive({ useHandCursor: true })
+      this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
+    }.bind(this))
   }
 
-  
   update (time, delta) {
     // called 60 times a second, hopefully!
-
-    // Checks to See if User is Pressing Left Key
     const keyLeftObj = this.input.keyboard.addKey('LEFT')
-
-    // Checks to See if User is Pressing Right Key
     const keyRightObj = this.input.keyboard.addKey('RIGHT')
-
-    // Checks to See if User is Prssing Space Bar
     const keySpaceObj = this.input.keyboard.addKey('SPACE')
 
-    // If the User is Pressing Left Key
     if (keyLeftObj.isDown === true) {
-      
-      // Moves Ship to the Left (x-axis)
       this.ship.x -= 15
-      
-      // Prevents the Ship from Going Off Screen
       if (this.ship.x < 0) {
-        this.ship.x = 1920
-      }
-    }
-
-    // If the User is Pressing Right Key
-    if (keyRightObj.isDown === true) {
-      
-      // Moves Ship to the Right (x-axis)
-      this.ship.x += 15
-      
-      // Prevents the Ship from Going Off Screen
-      if (this.ship.x > 1920) {
         this.ship.x = 0
       }
     }
 
-    // If ths User is Pressing Space Bar
+    if (keyRightObj.isDown === true) {
+      this.ship.x += 15
+      if (this.ship.x > 1920) {
+        this.ship.x = 1920
+      }
+    }
     if (keySpaceObj.isDown === true) {
-
-      //If Missile is already fired while pressing Space Bar
       if (this.fireMissile === false) {
-        
-        // Fire missile
+        // fire missile
         this.fireMissile = true
-
-        // Adds a New Missile
         const aNewMissile = this.physics.add.sprite(this.ship.x, this.ship.y, 'missile')
-
-        // Addds Missile to missileGroup
         this.missileGroup.add(aNewMissile)
-
-        //Plays Sound When Missile is Fired 
         this.sound.play('laser')
       }
-    }    
-
-    // If Spacebar is Not Being Pressed
+    }
+  
     if (keySpaceObj.isUp === true) {
       this.fireMissile = false
-    }      
+    }
 
-    // Function for all Missiles
     this.missileGroup.children.each(function (item) {
       item.y = item.y - 15
-
-      // Destroys Missile When Off the Screen 
-      if (item.y < 0) {
+      if (item.y < 50) {
         item.destroy()
       }
     })
