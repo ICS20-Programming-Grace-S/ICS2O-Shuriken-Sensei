@@ -57,16 +57,16 @@ class GameScene extends Phaser.Scene {
     console.log('Game Scene')
 
     // Loads Background Image
-    this.load.image('starBackground', 'images/narutoWarBackground.jpg')
+    this.load.image('starBackground', 'images/fruitNinjaGameBackground.webp')
 
     // Loads Ship Image
-    this.load.image('ship', 'images/narutoFront.png')
+    this.load.image('ship', 'images/Yoda (3).jpg')
 
     // Loads Missile Image
     this.load.image('missile', 'images/missile 1.png')
 
     // Loads Alien Image
-    this.load.image('alien', 'images/rinneganEye.png')
+    this.load.image('alien', 'images/watermelon.psd')
     
     // Loads Laser Sound
     this.load.audio('laser', 'sounds/laser1.wav')
@@ -81,7 +81,7 @@ class GameScene extends Phaser.Scene {
   // Creates the Data
   create (data) {
     // Creates the Background for gameScene
-    this.background = this.add.image(0, 0, 'starBackground').setScale(1.5)
+    this.background = this.add.image(0, 0, 'starBackground').setScale(1.9)
 
     // Positions the Background Image for gameScene to Take Up Screen
     this.background.setOrigin(0, 0)
@@ -132,6 +132,8 @@ class GameScene extends Phaser.Scene {
       // When Alien and Ship Collide They get Destroyed
       alienCollide.destroy()
       shipCollide.destroy()
+
+      this.score = this.score * 0 
 
       // Displays Game Over Text
       this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)

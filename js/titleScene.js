@@ -33,12 +33,12 @@ class TitleScene extends Phaser.Scene {
     console.log('Title Scene')
 
     //image
-    this.load.image('titleSceneBackground', 'images/strangerThingsbackground.webp')
+    this.load.image('titleSceneBackground', 'images/fruitNinjaTitleBackground.jpg')
   }
   
   // Creates the image that is being loaded
     create (data) {
-    this.titleSceneBackgroundImage = this.add.sprite(0, 0, 'titleSceneBackground')
+    this.titleSceneBackgroundImage = this.add.sprite(0, 0, 'titleSceneBackground').setScale(1.5)
     this.titleSceneBackgroundImage.x = 1920 / 2
     this.titleSceneBackgroundImage.y = 1080 / 2
 
