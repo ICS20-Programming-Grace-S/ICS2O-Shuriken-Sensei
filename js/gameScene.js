@@ -60,13 +60,13 @@ class GameScene extends Phaser.Scene {
     this.load.image('starBackground', 'images/fruitNinjaGameBackground.webp')
 
     // Loads Ship Image
-    this.load.image('ship', 'images/Yoda (3).jpg')
+    this.load.image('ship', 'images/fruitSensei.png')
 
     // Loads Missile Image
     this.load.image('missile', 'images/missile 1.png')
 
     // Loads Alien Image
-    this.load.image('alien', 'images/watermelon.psd')
+    this.load.image('alien', 'images/watermelon.png')
     
     // Loads Laser Sound
     this.load.audio('laser', 'sounds/laser1.wav')
