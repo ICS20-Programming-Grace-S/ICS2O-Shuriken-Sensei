@@ -35,10 +35,10 @@ class GameScene extends Phaser.Scene {
     // ship1 variable
     this.shipTwo = null
     
-    // cannon projectile variable
+    // Shuriken variable
     this.fireMissile = false
     
-    // cannon1 projectile variable
+    // Shuriken Two variable
     this.fireMissileTwo = false
     
     // score variable
@@ -70,15 +70,15 @@ class GameScene extends Phaser.Scene {
     //background image
     this.load.image('ninjaBackground', 'images/fruitNinjaGameBackground.webp')
     //image for ship
-    this.load.image('ship', 'fruitSensei.png')
-    //image for ship1
-    this.load.image('shipTwo', 'twoSensei.png')
+    this.load.image('ship', 'images/fruitSensei.png')
+    //image for shipTwo
+    this.load.image('shipTwo', 'images/twoSensei.png')
     //image for missile
     this.load.image('missile', 'images/weaponn.png')
     //image for alien
     this.load.image('alien', 'images/watermelon.png')
     //image for home button
-    this.load.image('homeButton', 'images/home.png')
+    this.load.image('homeButton', 'images/homeButton.png')
 
     //sound files
     // Loads Laser Sound
@@ -93,7 +93,7 @@ class GameScene extends Phaser.Scene {
   
   create (data) {
     // Creates the Background for gameScene
-    this.background = this.add.image(0, 0, 'starBackground').setScale(1.9)
+    this.background = this.add.image(0, 0, 'ninjaBackground').setScale(1.9)
 
     //Creates Home Button
     this.homeButton = this.add.sprite(1750, (1080 / 7) + 1, 'homeButton').setScale(0.50)
@@ -158,7 +158,7 @@ class GameScene extends Phaser.Scene {
       // Displays Game Over Text
       this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
       this.gameOverText.setInteractive({ useHandCursor: true })
-      this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
+      this.gameOverText.on('pointerdown', () => this.scene.start('twoGameScene'))
     }.bind(this))
 
     // collisions between cannon1 and ants
@@ -223,15 +223,18 @@ class GameScene extends Phaser.Scene {
     // if statement for up arrow pressed
     if (keyUpObj.isDown === true) {
       this.ship.y -= 15
+      
       if (this.ship.y < 0) {
-        this.ship.y = 10
+        this.ship.y = 1080;
+      }
       }
     }
     // if statement for down arrow pressed
     if (keyDownObj.isDown === true) {
       this.ship.y += 15
       if (this.ship.y > 1080) {
-        this.ship.y = 1070
+        this.ship.y = 0;
+      }
       }
     }
     // if statements for WASD and cannon1
@@ -291,7 +294,7 @@ class GameScene extends Phaser.Scene {
       if (this.fireMissileTwo === false) {
         // fire missile
         this.fireMissileTwo = true
-        const aNewMissile = this.physics.add.sprite(this.ship1.x, this.ship1.y -120, 'missile').setScale(0.15)
+        const aNewMissileTwo = this.physics.add.sprite(this.shipTwo.x, this.ship1.y, -120, 'missile').setScale(0.15)
         this.missileGroup.add(aNewMissile)
         this.sound.play('laser')
       }

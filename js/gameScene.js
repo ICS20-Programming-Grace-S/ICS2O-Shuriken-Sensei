@@ -181,13 +181,12 @@ class GameScene extends Phaser.Scene {
       // Moves Ship to the Left (x-axis)
       this.ship.x -= 15
 
-      this.ship.setAngle(45);
-
 
       // Prevents the Ship from Going Off Screen
       if (this.ship.x < 0) {
         this.ship.x = 1920
       }
+      this.ship.flipX = true
     }
 
     // If the User is Pressing Right Key
@@ -196,12 +195,11 @@ class GameScene extends Phaser.Scene {
       // Moves Ship to the Right (x-axis)
       this.ship.x += 15
 
-      this.ship.setAngle(45);
-
       // Prevents the Ship from Going Off Screen
       if (this.ship.x > 1920) {
         this.ship.x = 0
       }
+      this.ship.flipX = false
     }
 
         // If the User is Pressing Left Key
@@ -209,8 +207,6 @@ class GameScene extends Phaser.Scene {
 
       // Moves Ship to the Left (x-axis)
       this.ship.y -= +15
-
-      this.ship.setAngle(0);
 
       // Prevents the Ship from Going Off Screen
       if (this.ship.y < 0) {
@@ -223,8 +219,6 @@ class GameScene extends Phaser.Scene {
 
       // Moves Ship to the Left (x-axis)
       this.ship.y -= -15
-
-      this.ship.setAngle(0);
 
       // Prevents the Ship from Going Off Screen
       if (this.ship.y > 1080) {
