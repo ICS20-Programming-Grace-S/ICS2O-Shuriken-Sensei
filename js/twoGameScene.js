@@ -22,16 +22,18 @@ class GameScene extends Phaser.Scene {
 
   // Runs Phaser
   constructor () {
-    super({ key: 'gameScene' })
+    super({ key: 'twoGameScene' })
 
-        this.homeButton = null
-
-
+    this.homeButton = null
+    
     // Initializes the ship variable
     this.ship = null
+    
+    // Initializes the second ship variable
+    this.shipTwo = null
 
     // Initializes the Mislile variable
-    this.missile = null;
+    this.missile = null
     
     // Allows only one Misslie to Fire at Once
     this.fireMissile = false
@@ -65,6 +67,9 @@ class GameScene extends Phaser.Scene {
     // Loads Ship Image
     this.load.image('ship', 'images/fruitSensei.png')
 
+        // Loads Ship Image
+    this.load.image('shipTwo', 'images/twoSensei.png')
+
     // Loads Missile Image
     this.load.image('missile', 'images/weaponn.png')
 
@@ -94,7 +99,6 @@ class GameScene extends Phaser.Scene {
     this.homeButton = this.add.sprite(1750, (1080 / 7) + 1, 'homeButton').setScale(0.50)
     this.homeButton.setInteractive({ useHandCursor: true })
     this.homeButton.on('pointerdown', () => this.clickButtonHome())
-
     
     // Positions the Background Image for gameScene to Take Up Screen
     this.background.setOrigin(0, 0)
@@ -104,6 +108,9 @@ class GameScene extends Phaser.Scene {
     
     // Displays Ship 
     this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship')
+    
+    // Displays Ship Two 
+    this.shipTwo = this.physics.add.sprite(1920 / 2, 1080 - 100, 'shipTwo')
 
     // Creates a Group for The Missiles
     this.missileGroup = this.physics.add.group()
@@ -153,7 +160,23 @@ class GameScene extends Phaser.Scene {
       this.gameOverText.setInteractive({ useHandCursor: true })
       this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
     }.bind(this))
-  }
+
+    // collisions between cannon1 and ants
+      this.physics.add.collider(this.ship1, this.alienGroup, function (shipTwoCollide, alienCollide) {
+        // death sound on contact
+        this.sound.play('death')
+        // pause physics to stop new enemies from spawning
+        this.physics.pause()
+        // destroy cannon on contact with ant
+        alienCollide.destroy()
+        shipTwoCollide.destroy()
+        // display and orient game over text
+        this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
+        // make gameOverText interactive 
+        this.gameOverText.setInteractive({ useHandCursor: true })
+        this.gameOverText.on('pointerdown', () => this.scene.start('gameScene', this.score = 0, this.sound.play('button')))
+      }.bind(this))
+    }
 
   
   update (time, delta) {
@@ -172,6 +195,11 @@ class GameScene extends Phaser.Scene {
 		// Checks to See if User is Pressing Down Key
 		const keyDownObj = this.input.keyboard.addKey('DOWN')
 
+    const keyAObj = this.input.keyboard.addKey('A')
+    const keyDObj = this.input.keyboard.addKey('D')
+    const keyWObj = this.input.keyboard.addKey('W')
+    const keySObj = this.input.keyboard.addKey('S')
+    
     // Checks to See if User is Prssing Space Bar
     const keySpaceObj = this.input.keyboard.addKey('SPACE')
 
@@ -180,8 +208,6 @@ class GameScene extends Phaser.Scene {
 
       // Moves Ship to the Left (x-axis)
       this.ship.x -= 15
-
-      this.ship.setAngle(-45);
 
       // Prevents the Ship from Going Off Screen
       if (this.ship.x < 0) {
@@ -195,8 +221,6 @@ class GameScene extends Phaser.Scene {
       // Moves Ship to the Right (x-axis)
       this.ship.x += 15
 
-      this.ship.setAngle(45);
-
       // Prevents the Ship from Going Off Screen
       if (this.ship.x > 1920) {
         this.ship.x = 0
@@ -208,8 +232,6 @@ class GameScene extends Phaser.Scene {
 
       // Moves Ship to the Left (x-axis)
       this.ship.y -= +15
-
-      this.ship.setAngle(0);
 
       // Prevents the Ship from Going Off Screen
       if (this.ship.y < 0) {
@@ -223,11 +245,37 @@ class GameScene extends Phaser.Scene {
       // Moves Ship to the Left (x-axis)
       this.ship.y -= -15
 
-      this.ship.setAngle(0);
-
       // Prevents the Ship from Going Off Screen
       if (this.ship.y > 1080) {
       this.ship.y = 1070
+      }
+    }
+
+        if (keyAObj.isDown === true) {
+      this.shipTwo.x -= 15
+      if (this.shipTwo.x <0) {
+        this.shipTwo.x = 1920
+      }
+    }
+    // if statement for D pressed
+    if (keyDObj.isDown === true) {
+      this.shipTwo.x += 15
+      if (this.shipTwo.x > 1920) {
+        this.shipTwo.x = 0
+      }
+    }
+    // if statement for W pressed
+    if (keyWObj.isDown === true) {
+      this.shipTwo.y -= 15
+      if (this.shipTwo.y < 0) {
+        this.shipTwo.y = 10
+      }
+    }
+    // if statement for S pressed
+    if (keySObj.isDown === true) {
+      this.shipTwo.y += 15
+      if (this.shipTwo.y > 1080) {
+        this.shipTwo.y = 1070
       }
     }
 

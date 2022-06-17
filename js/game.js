@@ -16,11 +16,17 @@ import MenuScene from './menuScene.js';
 // Link to gameScene.js
 import GameScene from './gameScene.js';
 
+import InstructionScene from './instructionScene.js';
+
+import TwoGameScene from './twoGameScene.js'
+
 // Creating constant for game scenes
 const splashScene = new SplashScene()
 const titleScene = new TitleScene()
 const menuScene = new MenuScene()
 const gameScene = new GameScene()
+const instructionScene = new InstructionScene()
+const twoGameScene = new TwoGameScene
 
 
 //*Game scene */
@@ -56,6 +62,8 @@ game.scene.add('splashScene', splashScene)
 game.scene.add('titleScene', titleScene)
 game.scene.add('menuScene', menuScene)
 game.scene.add('gameScene', gameScene)
+game.scene.add('instructionScene', instructionScene)
+game.scene.add('twoGameScene', twoGameScene)
 
 // Starting Scene
 game.scene.start('splashScene')

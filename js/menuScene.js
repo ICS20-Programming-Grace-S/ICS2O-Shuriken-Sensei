@@ -10,48 +10,68 @@ class MenuScene extends Phaser.Scene {
   constructor () {
     super({key: 'menuScene'})
 
-    // Initializing Menu Scene Background Image
     this.menuSceneBackgroundImage = null
-
-    // Initializing Start Button
     this.startButton = null
   }
-  
-  // Initializing Background Colour (White)
+
   init (data) {
+    
+    // set the background colour to white
     this.cameras.main.setBackgroundColor('#ffffff')
   }
 
-  // Loads the Title Scene
-    preload () {
+  // console message
+  preload () {
     console.log("Menu Scene")
     this.load.image('menuSceneBackground', 'images/fruitNinjaMenuScene.webp')
     this.load.image('startButton', 'images/start.png')
+    this.load.image('instructionButton', 'images/instructionsButton.png')
+    this.load.image('onePlayerButton', 'images/onePlayerButton.png')
+    this.load.image('twoPlayerButton', 'images/twoPlayerButton.png')
+    
   }
-  
-  // Creates the image that is being loaded
-   create (data) {
+
+  // locations of background, button and text
+  create (data) {
     this.menuSceneBackgroundImage = this.add.sprite(0, 0, 'menuSceneBackground').setScale(2.0)
     this.menuSceneBackgroundImage.x = 1920 / 2
     this.menuSceneBackgroundImage.y = 1080 / 2
 
-    //Button
-    this.startButton = this.add.sprite(1920 / 2, (1080 / 2) + 100, 'startButton')
-    this.startButton.setInteractive({ useHandCursor: true })
-    this.startButton.on('pointerdown', () => this.clickButton())
+    // One Player Button
+    this.instructionButton = this.add.sprite(1700 / 2, (1080 / 2) + 100, 'onePlayerButton').setScale(0.5)
+    this.instructionButton.setInteractive({ useHandCursor: true })
+    this.instructionButton.on('pointerdown', () => this.clickButtonSingle())
 
-     // Instructions
-    this.menuSceneText = this.add.text(1920 / 2, (1370 / 2) + 350, 'Use the SPACE BAR to fire missiles, and use the arrow keys to move.', this.titleSceneTextStyle).setOrigin(0.5).setScale(2)
+        // Two Player Button
+    this.instructionButton = this.add.sprite(2000 / 2, (1080 / 2) + 100, 'twoPlayerButton').setScale(0.5)
+    this.instructionButton.setInteractive({ useHandCursor: true })
+    this.instructionButton.on('pointerdown', () => this.clickButtonDouble())
 
-    this.menuSceneText = this.add.text(1920 / 2, (1280 / 2) + 350, 'Objective: - Destory as many aliens as possible!', this.titleSceneTextStyle).setOrigin(0.5).setScale(2)
+
+        // instrcution button
+    this.instructionButton = this.add.sprite(490 / 2, (30 / 2) + 100, 'instructionButton').setScale(0.5)
+    this.instructionButton.setInteractive({ useHandCursor: true })
+    this.instructionButton.on('pointerdown', () => this.instructClickButton())
   }
 
   update (time, delta) {
   }
 
-  clickButton () {
+  // when button is clicked
+  clickButtonSingle () {
     this.scene.start('gameScene')
   }
+
+    // when button is clicked
+  clickButtonDouble () {
+    this.scene.start('twoGameScene')
+  }
+
+  // when button is clicked
+  instructClickButton () {
+    this.scene.start('instructionScene')
+  } 
+
 }
 
 export default MenuScene

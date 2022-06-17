@@ -20,7 +20,7 @@ class TitleScene extends Phaser.Scene {
     this.titleSceneText = null
 
     // Intializing Title Scene Style for Text
-    this.titleSceneTextStyle = { font: '200px Times', fill: '#fde4b9', align: 'center' }
+    this.titleSceneTextStyle = { font: '200px Times', fill: '#ffffff', align: 'center' }
   }
   
   // Initializing Background Colour (White)
@@ -43,7 +43,7 @@ class TitleScene extends Phaser.Scene {
     this.titleSceneBackgroundImage.y = 1080 / 2
 
      //title scene on screen text
-    this.titleSceneText = this.add.text(1920 / 2, (1080 / 2) + 350, 'The Upside Down', this.titleSceneTextStyle).setOrigin(0.5)
+    this.titleSceneText = this.add.text(1920 / 2, (1080 / 2) + 350, 'Shuriken SenSei ', this.titleSceneTextStyle).setOrigin(0.5)
     }
       
   //Switches the title scene over to the menu scene
