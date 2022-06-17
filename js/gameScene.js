@@ -181,7 +181,8 @@ class GameScene extends Phaser.Scene {
       // Moves Ship to the Left (x-axis)
       this.ship.x -= 15
 
-      this.ship.setAngle(-45);
+      this.ship.setAngle(45);
+
 
       // Prevents the Ship from Going Off Screen
       if (this.ship.x < 0) {

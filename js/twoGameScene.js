@@ -4,7 +4,7 @@
 // Created on: April 2022
 // This file contains the JS functions for index.html
 
-// This is the gameScene
+// This is the twoGameScene
 
 // Extends code to Phaser.Scene
 class GameScene extends Phaser.Scene {
@@ -20,65 +20,67 @@ class GameScene extends Phaser.Scene {
     this.alienGroup.add(anAlien)
   }
 
-  // Runs Phaser
   constructor () {
     super({ key: 'twoGameScene' })
-
+    // creating variables
+    // creating variable for home button
     this.homeButton = null
     
-    // Initializes the ship variable
+    // backround variable
+    this.background = null
+    
+    // ship variable
     this.ship = null
     
-    // Initializes the second ship variable
+    // ship1 variable
     this.shipTwo = null
-
-    // Initializes the Mislile variable
-    this.missile = null
     
-    // Allows only one Misslie to Fire at Once
+    // cannon projectile variable
     this.fireMissile = false
-
-    // Initializes Variables for the score and the scoreTextStyle
+    
+    // cannon1 projectile variable
+    this.fireMissileTwo = false
+    
+    // score variable
     this.score = 0
+    
+    // score text variable
     this.scoreText = null
-
-    // Creates font for scoreTextStyle
+    
+    // score text variable styling
     this.scoreTextStyle = { font: '65px Arial', fill: '#000000', align: 'center' }
-
-    // Initializes Variable for Game over Text
+    // game over text variable
     this.gameOverText = null
-
-    // Creates font for gameOverTextStyle
+    // game over text variable styling
     this.gameOverTextStyle = { font: '65px Arial', fill: '#ff0000', align: 'center' }
+    // game win text variable
+    this.gameWinText = null
+    // game over text variable styling
+    this.gameWinTextStyle = { font: '65px Arial', fill: '#ff0000', align: 'center' }
   }
-
-  // Initializing background colour
+// set game scene background colour
   init (data) {
     this.cameras.main.setBackgroundColor('#0x5f6e7a')
   }
 
-  //Loads Images and Sounds
   preload () {
     console.log('Game Scene')
 
-    // Loads Background Image
-    this.load.image('starBackground', 'images/fruitNinjaGameBackground.webp')
-
-    // Loads Ship Image
-    this.load.image('ship', 'images/fruitSensei.png')
-
-        // Loads Ship Image
-    this.load.image('shipTwo', 'images/twoSensei.png')
-
-    // Loads Missile Image
+    // images
+    //background image
+    this.load.image('ninjaBackground', 'images/fruitNinjaGameBackground.webp')
+    //image for ship
+    this.load.image('ship', 'fruitSensei.png')
+    //image for ship1
+    this.load.image('shipTwo', 'twoSensei.png')
+    //image for missile
     this.load.image('missile', 'images/weaponn.png')
-
-    // Loads Alien Image
+    //image for alien
     this.load.image('alien', 'images/watermelon.png')
+    //image for home button
+    this.load.image('homeButton', 'images/home.png')
 
-    //Loads Home 
-    this.load.image('homeButton', 'images/homButton.png')
-    
+    //sound files
     // Loads Laser Sound
     this.load.audio('laser', 'sounds/laser1.wav')
 
@@ -88,10 +90,8 @@ class GameScene extends Phaser.Scene {
     // Loads Bomb Sound
     this.load.audio('bomb', 'sounds/bomb.wav')
   }
-
-  // Creates the Data
+  
   create (data) {
-    
     // Creates the Background for gameScene
     this.background = this.add.image(0, 0, 'starBackground').setScale(1.9)
 
@@ -99,11 +99,11 @@ class GameScene extends Phaser.Scene {
     this.homeButton = this.add.sprite(1750, (1080 / 7) + 1, 'homeButton').setScale(0.50)
     this.homeButton.setInteractive({ useHandCursor: true })
     this.homeButton.on('pointerdown', () => this.clickButtonHome())
-    
+
     // Positions the Background Image for gameScene to Take Up Screen
     this.background.setOrigin(0, 0)
 
-    // Creates Score That Will Appear on Screen
+     // Creates Score That Will Appear on Screen
     this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
     
     // Displays Ship 
@@ -112,17 +112,17 @@ class GameScene extends Phaser.Scene {
     // Displays Ship Two 
     this.shipTwo = this.physics.add.sprite(1920 / 2, 1080 - 100, 'shipTwo')
 
-    // Creates a Group for The Missiles
+     // Creates a Group for The Missiles
     this.missileGroup = this.physics.add.group()
 
-    // Create a Group for The Aliens
+     // Create a Group for The Aliens
     this.alienGroup = this.add.group()
     this.createAlien()
-
+    
     // Collisions Between Missiles and Aliens
     this.physics.add.collider(this.missileGroup, this.alienGroup, function (missileCollide, alienCollide) {
       
-      // When Alien and Missile Collide They get Destroyed
+     // When Alien and Missile Collide They get Destroyed
       alienCollide.destroy()
 
       // Plays Explosion Sound When They Get Destroyed
@@ -139,8 +139,8 @@ class GameScene extends Phaser.Scene {
       this.createAlien()
       this.createAlien()
     }.bind(this))
-
-    // Collisions between ship and aliens
+    
+      /// Collisions between ship and aliens
     this.physics.add.collider(this.ship, this.alienGroup, function (shipCollide, alienCollide) {
 
       // Plays Bomb Sound When They Get Destroyed
@@ -162,9 +162,7 @@ class GameScene extends Phaser.Scene {
     }.bind(this))
 
     // collisions between cannon1 and ants
-      this.physics.add.collider(this.ship1, this.alienGroup, function (shipTwoCollide, alienCollide) {
-        // death sound on contact
-        this.sound.play('death')
+      this.physics.add.collider(this.shipTwo, this.alienGroup, function (shipTwoCollide, alienCollide) {
         // pause physics to stop new enemies from spawning
         this.physics.pause()
         // destroy cannon on contact with ant
@@ -178,11 +176,12 @@ class GameScene extends Phaser.Scene {
       }.bind(this))
     }
 
-  
   update (time, delta) {
-
-    // called 60 times a second, hopefully!
-
+    // play backround music on update (commented out because it slowed down the game too much)
+    // const audioObj = new Audio("/sounds/backgroundMusic.mp3")
+    // audioObj.play()
+    
+    // called 60 times a second
     // Checks to See if User is Pressing Left Key
     const keyLeftObj = this.input.keyboard.addKey('LEFT')
 
@@ -200,58 +199,44 @@ class GameScene extends Phaser.Scene {
     const keyWObj = this.input.keyboard.addKey('W')
     const keySObj = this.input.keyboard.addKey('S')
     
-    // Checks to See if User is Prssing Space Bar
+    // creating local variable for spacebar
     const keySpaceObj = this.input.keyboard.addKey('SPACE')
-
-    // If the User is Pressing Left Key
+    
+    // creating local variable for shift
+    const keyShiftObj = this.input.keyboard.addKey('SHIFT')
+    
+    // if statements for arrow keys and cannon
+    // if statement for left arrow pressed
     if (keyLeftObj.isDown === true) {
-
-      // Moves Ship to the Left (x-axis)
       this.ship.x -= 15
-
-      // Prevents the Ship from Going Off Screen
-      if (this.ship.x < 0) {
+      if (this.ship.x <0) {
         this.ship.x = 1920
       }
     }
-
-    // If the User is Pressing Right Key
+    // if statement for right arrow pressed
     if (keyRightObj.isDown === true) {
-
-      // Moves Ship to the Right (x-axis)
       this.ship.x += 15
-
-      // Prevents the Ship from Going Off Screen
       if (this.ship.x > 1920) {
         this.ship.x = 0
       }
     }
-
-        // If the User is Pressing Left Key
+    // if statement for up arrow pressed
     if (keyUpObj.isDown === true) {
-
-      // Moves Ship to the Left (x-axis)
-      this.ship.y -= +15
-
-      // Prevents the Ship from Going Off Screen
+      this.ship.y -= 15
       if (this.ship.y < 0) {
         this.ship.y = 10
       }
     }
-
-        // If the User is Pressing Left Key
+    // if statement for down arrow pressed
     if (keyDownObj.isDown === true) {
-
-      // Moves Ship to the Left (x-axis)
-      this.ship.y -= -15
-
-      // Prevents the Ship from Going Off Screen
+      this.ship.y += 15
       if (this.ship.y > 1080) {
-      this.ship.y = 1070
+        this.ship.y = 1070
       }
     }
-
-        if (keyAObj.isDown === true) {
+    // if statements for WASD and cannon1
+    // if statement for A pressed
+    if (keyAObj.isDown === true) {
       this.shipTwo.x -= 15
       if (this.shipTwo.x <0) {
         this.shipTwo.x = 1920
@@ -278,42 +263,51 @@ class GameScene extends Phaser.Scene {
         this.shipTwo.y = 1070
       }
     }
-
-    // If ths User is Pressing Space Bar
+    // firing key for cannon
+    // if statement for spacebar pressed
     if (keySpaceObj.isDown === true) {
-
-      //If Missile is already fired while pressing Space Bar
       if (this.fireMissile === false) {
-        
-        // Fire missile
+        // fire missile
         this.fireMissile = true
-
-        // Adds a New Missile
-        const aNewMissile = this.physics.add.sprite(this.ship.x, this.ship.y, 'missile')
-
-        // Adds Missile to missileGroup
+        const aNewMissile = this.physics.add.sprite(this.ship.x, this.ship.y -120, 'missile').setScale(0.15)
         this.missileGroup.add(aNewMissile)
-
-        //Plays Sound When Missile is Fired 
-         this.sound.play('laser')
+        this.sound.play('laser')
       }
     }
-
-    // If Spacebar is Not Being Pressed
+    // allow multiple missiles to be fired
     if (keySpaceObj.isUp === true) {
       this.fireMissile = false
-    }
-
-    // Function for all Missiles
+    }   
+    // allow missiles to travel up screen
     this.missileGroup.children.each(function (item) {
       item.y = item.y - 15
-
-      // Destroys Missile When Off the Screen 
-      if (item.y < 50) {
+      if (item.y < 0) {
         item.destroy()
       }
     })
-      // if enemy leaves screen
+    // firing key for cannon1
+    // if statement for shift pressed
+    if (keyShiftObj.isDown === true) {
+      if (this.fireMissileTwo === false) {
+        // fire missile
+        this.fireMissileTwo = true
+        const aNewMissile = this.physics.add.sprite(this.ship1.x, this.ship1.y -120, 'missile').setScale(0.15)
+        this.missileGroup.add(aNewMissile)
+        this.sound.play('laser')
+      }
+    }
+    // allow multiple missiles to be fired
+    if (keyShiftObj.isUp === true) {
+      this.fireMissileTwo = false
+    }   
+    // allow missiles to travel up screen
+    this.missileGroup.children.each(function (item) {
+      item.y = item.y - 15
+      if (item.y < 0) {
+        item.destroy()
+      }
+    })
+    // if enemy leaves screen
       // meteor loop
        this.alienGroup.children.each(function (item) {
       if (item.y > 1080) {
@@ -327,6 +321,5 @@ class GameScene extends Phaser.Scene {
     this.scene.start('menuScene')
   }
 }
-
 
 export default GameScene
