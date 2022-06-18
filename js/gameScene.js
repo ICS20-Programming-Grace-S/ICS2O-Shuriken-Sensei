@@ -15,7 +15,7 @@ class GameScene extends Phaser.Scene {
     let alienXVelocity = Math.floor(Math.random() * 50) + 1 // this will get a number between 1 and 50;
     alienXVelocity *= Math.round(Math.random()) ? 1 : -1 // this will add minus sign in 50% of cases
     const anAlien = this.physics.add.sprite(alienXLocation, -100, 'alien')
-    anAlien.body.velocity.y = 200
+    anAlien.body.velocity.y = 110
     anAlien.body.velocity.x = alienXVelocity
     this.alienGroup.add(anAlien)
   }
@@ -24,14 +24,13 @@ class GameScene extends Phaser.Scene {
   constructor () {
     super({ key: 'gameScene' })
 
-        this.homeButton = null
-
-
+    this.homeButton = null
+    
     // Initializes the ship variable
     this.ship = null
 
     // Initializes the Mislile variable
-    this.missile = null;
+    this.missile = null
     
     // Allows only one Misslie to Fire at Once
     this.fireMissile = false
@@ -65,6 +64,9 @@ class GameScene extends Phaser.Scene {
     // Loads Ship Image
     this.load.image('ship', 'images/fruitSensei.png')
 
+        // Loads Ship Image
+    this.load.image('shipTwo', 'images/twoSensei.png')
+
     // Loads Missile Image
     this.load.image('missile', 'images/weaponn.png')
 
@@ -93,8 +95,7 @@ class GameScene extends Phaser.Scene {
     //Creates Home Button
     this.homeButton = this.add.sprite(1750, (1080 / 7) + 1, 'homeButton').setScale(0.50)
     this.homeButton.setInteractive({ useHandCursor: true })
-    this.homeButton.on('pointerdown', () => this.clickButtonHome())
-
+    this.homeButton.on('pointerdown', () => this.scene.start('menuScene', this.score = 0))
     
     // Positions the Background Image for gameScene to Take Up Screen
     this.background.setOrigin(0, 0)
@@ -154,7 +155,6 @@ class GameScene extends Phaser.Scene {
       this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
     }.bind(this))
   }
-
   
   update (time, delta) {
 
@@ -171,7 +171,7 @@ class GameScene extends Phaser.Scene {
     
 		// Checks to See if User is Pressing Down Key
 		const keyDownObj = this.input.keyboard.addKey('DOWN')
-
+    
     // Checks to See if User is Prssing Space Bar
     const keySpaceObj = this.input.keyboard.addKey('SPACE')
 
@@ -180,7 +180,6 @@ class GameScene extends Phaser.Scene {
 
       // Moves Ship to the Left (x-axis)
       this.ship.x -= 15
-
 
       // Prevents the Ship from Going Off Screen
       if (this.ship.x < 0) {
@@ -210,7 +209,7 @@ class GameScene extends Phaser.Scene {
 
       // Prevents the Ship from Going Off Screen
       if (this.ship.y < 0) {
-        this.ship.y = 10
+        this.ship.y = 1080;
       }
     }
 
@@ -222,7 +221,7 @@ class GameScene extends Phaser.Scene {
 
       // Prevents the Ship from Going Off Screen
       if (this.ship.y > 1080) {
-      this.ship.y = 1070
+        this.ship.y = 0;
       }
     }
 
@@ -262,10 +261,11 @@ class GameScene extends Phaser.Scene {
     })
       // if enemy leaves screen
       // meteor loop
-       this.alienGroup.children.each(function (item) {
-      if (item.y > 1080) {
-        item.y = -10
-        item.x = Math.floor(Math.random() * 1920 + 1)
+    this.alienGroup.children.each(function (item) {
+      if (item.y > 1080 || item.x < 0 || item.x > 1920) {
+        item.y = -5
+        const alienXLocationCord = Math.floor(Math.random() * 1920) + 1
+        item.x = alienXLocationCord
       }
     })
   }

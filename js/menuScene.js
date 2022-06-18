@@ -64,7 +64,7 @@ class MenuScene extends Phaser.Scene {
 
     // when button is clicked
   clickButtonDouble () {
-    this.scene.start('twoGameScene')
+    this.scene.start('gameSceneTwo')
   }
 
   // when button is clicked
