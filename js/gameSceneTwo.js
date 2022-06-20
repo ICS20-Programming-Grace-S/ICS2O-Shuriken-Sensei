@@ -9,7 +9,7 @@
 // Extends code to Phaser.Scene
 class GameSceneTwo extends Phaser.Scene {
 
-  // create an alien
+  // Creates an Alien Enemy 
   createAlien () {
     //random number generator
     //this will get a number between 1 and 1920
@@ -21,45 +21,56 @@ class GameSceneTwo extends Phaser.Scene {
     const anAlien = this.physics.add.sprite(alienXLocation, -100, 'alien')
     anAlien.body.velocity.y = 100
     anAlien.body.velocity.x = alienXVelocity
-
     this.alienGroup.add(anAlien)  
   }
    
-  //Creates a new object that get called with the key "gameScene"
+  // Runs Phaser
   constructor () {
     super({ key: "gameSceneTwo" })
 
-    //initialize variables
+    // Initializes the background variable
     this.background = null
+    
+    // Initializes Ship Variable
     this.ship = null
+
+    // Initializes Ship1 Variable
     this.ship1 = null
+
+    // Allows only one Misslie to Fire at Once
     this.fireMissile = false
+
+    // Initializes Variables for the score and the scoreTextStyle
     this.score = 0
     this.scoreText = null
+
+    // Creates font for scoreTextStyle
     this.scoreTextStyle = { font: '65px Arial', fill: '#ffffff', align: 'center'}
 
-    //game over text variable
+    // Initializes Variable for Game over Text
     this.gameOverText = null
+
+    // Creates font for gameOverTextStyle
     this.gameOverTextStyle = {font: '65px Arial', fill: '#ff0000', align: 'center'}
 
   }
   
-  //Sets up the base state of the scene
+  // Initializing background colour
   init (data) {
     this.cameras.main.setBackgroundColor("ffffff")
   }
   
-  //Loads data before processing / displaying it to the user
+  // Preloads Images and Audio
   preload () {
     console.log("Game Scene")
 
     // Loads Background Image
-    this.load.image('starBackground', 'images/fruitNinjaGameBackground.webp')
+    this.load.image('ninjaBackground', 'images/fruitNinjaGameBackground.webp')
 
     // Loads Ship Image
     this.load.image('ship', 'images/fruitSensei.png')
 
-        // Loads Ship Image
+    // Loads Ship Image
     this.load.image('ship1', 'images/twoSensei.png')
 
     // Loads Missile Image
@@ -69,25 +80,24 @@ class GameSceneTwo extends Phaser.Scene {
     this.load.image('alien', 'images/watermelon.png')
 
     //Loads Home 
-    this.load.image('homeButton', 'images/homButton.png')
+    this.load.image('homeButton', 'images/homeButton.png')
     
-    // Loads Laser Sound
-    this.load.audio('laser', 'sounds/3HB8LYH-shuriken-impact-58886-[AudioTrimmer.com].mp3')
+    // Loads SHuriken Sound
+    this.load.audio('shuriken', 'sounds/3HB8LYH-shuriken-impact-58886-[AudioTrimmer.com].mp3')
 
     // Loads Explosion Sound
     this.load.audio('explosion', 'sounds/6TDYKWE-game-gore-explosion-[AudioTrimmer.com] (1).mp3')
 
-    // Loads Bomb Sound
-    this.load.audio('bomb', 'sounds/VN674UA-swordsman-death-shout (1)-[AudioTrimmer.com].mp3')
+    // Loads Death Sound
+    this.load.audio('death', 'sounds/VN674UA-swordsman-death-shout (1)-[AudioTrimmer.com].mp3')
 
   }
-  
-  //displays the content to the user
+
+  // Creates Data
   create (data) {
-    //centers background
-    //centers text
-// Creates the Background for gameScene
-    this.background = this.add.image(0, 0, 'starBackground').setScale(1.9)
+
+    // Creates the Background for gameSceneTwo
+    this.background = this.add.image(0, 0, 'ninjaBackground').setScale(1.9)
 
     // Sets the Origin of the Background
     this.background.setOrigin(0, 0)
@@ -107,10 +117,10 @@ class GameSceneTwo extends Phaser.Scene {
     // Creates Ship1
     this.ship1 = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship1')
     
-    //creates a group for the missiles
+    // Creates a Group for the Missiles
     this.missileGroup = this.physics.add.group()
 
-    //creates a group for the aliens
+    // Creates a Group for the Aliens
     this.alienGroup = this.add.group()
     this.createAlien()
 
@@ -135,35 +145,48 @@ class GameSceneTwo extends Phaser.Scene {
       this.createAlien()
     }.bind(this))
       
-       // collisions between ship and alien
+       // Collisions Between Ship and Alien
       this.physics.add.collider(this.ship, this.alienGroup, function (shipCollide, alienCollide) {
-        // explosion sound on contact
-        this.sound.play('bomb')
+        
+        // Plays Explosion Sound When They Get Destroyed
+        this.sound.play('death')
+        
         // pause physics to stop new enemies for spawning
         this.physics.pause()
-        // destroy cannon on contact with ant
+           
+        // When Alien and Missile Collide They get Destroyed
         alienCollide.destroy()
+
+        // Plays Explosion Sound When They Get Destroyed
         shipCollide.destroy()
+        
         // set score to 0 score on contact
         this.score = this.score * 0
+        
         // display game over text
         this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
         this.gameOverText.setInteractive({ useHandCursor: true })
         this.gameOverText.on('pointerdown', () => this.scene.start('gameSceneTwo'))
       }.bind(this))
+    
+    // collisions between ship1 and alien
     this.physics.add.collider(this.ship1, this.alienGroup, function (ship1Collide, alienCollide) {
-      // collisions between ship1 and alien
-        // explosion sound on contact
-        this.sound.play('bomb')
-        // pause physics to stop new enemies for spawning
-        this.physics.pause()
-        // destroy cannon on contact with ant
-        alienCollide.destroy()
-        ship1Collide.destroy()
-        // set score to 0 score on contact
-        this.score = this.score * 0
-        // display game over text
-        this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
+      
+      // Plays Death Sound When They Get Destroyed
+      this.sound.play('death')
+      
+      // pause physics to stop new enemies for spawning
+      this.physics.pause()
+      
+      // When Alien and Missile Collide They get Destroyed
+      alienCollide.destroy()
+      ship1Collide.destroy()
+      
+      // Sets Score to 0 score on contact
+      this.score = this.score * 0
+      
+        // Displays Game Over Text
+      this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
         this.gameOverText.setInteractive({ useHandCursor: true })
         this.gameOverText.on('pointerdown', () => this.scene.start('gameSceneTwo'))
       }.bind(this))
@@ -180,8 +203,8 @@ class GameSceneTwo extends Phaser.Scene {
     // Checks to See if User is Pressing Up Key
     const keyUpObj = this.input.keyboard.addKey('UP')
     
-		// Checks to See if User is Pressing Down Key
-		const keyDownObj = this.input.keyboard.addKey('DOWN')
+	// Checks to See if User is Pressing Down Key
+	const keyDownObj = this.input.keyboard.addKey('DOWN')
     
     //Check if spacebar is pressed
     const keyspaceObj = this.input.keyboard.addKey('SPACE')
@@ -297,40 +320,46 @@ class GameSceneTwo extends Phaser.Scene {
         this.ship1.y = 1070
       }
     }
-        //Fire missile if the spacebar is pressed
+    
+    //Fire missile if the spacebar is pressed
     if (keyspaceObj.isDown === true) {
       if (this.fireMissile === false) {
-        //fire missile
+        
+        // Fire missile        
         this.fireMissile = true
         const aNewMissile = this.physics.add.sprite(this.ship.x, this.ship.y, 'missile')
         this.missileGroup.add(aNewMissile)
-        //plays laser sound
-        this.sound.play('laser')
+        
+        //plays Shuriken Sound
+        this.sound.play('shuriken')
       }
     }
-    //sets firemissile to false
+    
+    //If Missile is already fired while pressing Space Bar
     if (keyspaceObj.isUp === true) {
       this.fireMissile = false
     }
 
-    //Fire missile if shift is pressed
+    //Fire Missile if Shift is Pressed
     if (keyshiftObj.isDown === true) {
       if (this.fireMissile1 === false) {
-        //fire missile
+        
+        // Fire Missile
         this.fireMissile1 = true
         const aNewMissile = this.physics.add.sprite(this.ship1.x, this.ship1.y, 'missile')
         this.missileGroup.add(aNewMissile)
-        //plays laser sound
-        this.sound.play('laser')
+        
+        // Plays Shuriken Sound
+        this.sound.play('shuriken')
       }
     }
     
-    //sets firemissile to false
+    //If Missile is already fired while pressing Space Bar
     if (keyshiftObj.isUp === true) {
       this.fireMissile1 = false
     }
 
-    //creates a function group for the missile group
+    // Creates a function group for the missile group
     this.missileGroup.children.each(function (item) {
       item.y = item.y - 8
       if (item.y < 0) {
@@ -349,3 +378,4 @@ class GameSceneTwo extends Phaser.Scene {
 }
 
 export default GameSceneTwo
+

@@ -32,7 +32,7 @@ class TitleScene extends Phaser.Scene {
   preload () {
     console.log('Title Scene')
 
-    //image
+    // Image
     this.load.image('titleSceneBackground', 'images/fruitNinjaTitleBackground.jpg')
   }
   
@@ -42,11 +42,11 @@ class TitleScene extends Phaser.Scene {
     this.titleSceneBackgroundImage.x = 1920 / 2
     this.titleSceneBackgroundImage.y = 1080 / 2
 
-     //title scene on screen text
+     // Title scene on screen text
     this.titleSceneText = this.add.text(1920 / 2, (1080 / 2) + 350, 'Shuriken Sensei ', this.titleSceneTextStyle).setOrigin(0.5)
     }
       
-  //Switches the title scene over to the menu scene
+  // Switches the title scene over to the menu scene
   update (time, delta) {
     if (time > 9000) {
       this.scene.switch('menuScene')
