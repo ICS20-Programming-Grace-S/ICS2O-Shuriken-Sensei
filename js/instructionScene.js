@@ -17,6 +17,7 @@ class InstructionScene extends Phaser.Scene {
     console.log("Instruction Scene")
     this.load.image('instructionSceneBackground', './images/fruitNinjaInstructionScene.jpg')
     this.load.image('leftButton', './images/backButton.png')
+    this.load.audio('button', 'X3WS53Z-button-click-and-ring-[AudioTrimmer.com].mp3')
     
   }
 

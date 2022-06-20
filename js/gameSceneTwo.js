@@ -22,8 +22,7 @@ class GameSceneTwo extends Phaser.Scene {
     anAlien.body.velocity.y = 100
     anAlien.body.velocity.x = alienXVelocity
 
-    this.alienGroup.add(anAlien)
-    
+    this.alienGroup.add(anAlien)  
   }
    
   //Creates a new object that get called with the key "gameScene"
@@ -43,10 +42,6 @@ class GameSceneTwo extends Phaser.Scene {
     this.gameOverText = null
     this.gameOverTextStyle = {font: '65px Arial', fill: '#ff0000', align: 'center'}
 
-    // game win text variable
-    this.gameWinText = null
-    // game over text variable styling
-    this.gameWinTextStyle = { font: '65px Arial', fill: '#ff0000', align: 'center' }
   }
   
   //Sets up the base state of the scene
@@ -77,13 +72,14 @@ class GameSceneTwo extends Phaser.Scene {
     this.load.image('homeButton', 'images/homButton.png')
     
     // Loads Laser Sound
-    this.load.audio('laser', 'sounds/laser1.wav')
+    this.load.audio('laser', 'sounds/3HB8LYH-shuriken-impact-58886-[AudioTrimmer.com].mp3')
 
     // Loads Explosion Sound
-    this.load.audio('explosion', 'sounds/barrelExploding.wav')
+    this.load.audio('explosion', 'sounds/6TDYKWE-game-gore-explosion-[AudioTrimmer.com] (1).mp3')
 
     // Loads Bomb Sound
-    this.load.audio('bomb', 'sounds/bomb.wav')
+    this.load.audio('bomb', 'sounds/VN674UA-swordsman-death-shout (1)-[AudioTrimmer.com].mp3')
+
   }
   
   //displays the content to the user
@@ -93,19 +89,23 @@ class GameSceneTwo extends Phaser.Scene {
 // Creates the Background for gameScene
     this.background = this.add.image(0, 0, 'starBackground').setScale(1.9)
 
-    
+    // Sets the Origin of the Background
     this.background.setOrigin(0, 0)
 
+    // Creates Score That Will Appear on Screen
     this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
-
-    this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship')
-    this.ship1 = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship1')
-
-
-    // create home button
-    this.homeButton = this.add.sprite(1750, (1080 / 7) + 1, 'homeButton').setScale(2)
+    
+    //Creates Home Button
+    this.homeButton = this.add.sprite(1750, (1080 / 7) + 1, 'homeButton').setScale(0.50)
     this.homeButton.setInteractive({ useHandCursor: true })
     this.homeButton.on('pointerdown', () => this.scene.start('menuScene', this.score = 0))
+    
+
+    // Creates Ship
+    this.ship = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship')
+
+    // Creates Ship1
+    this.ship1 = this.physics.add.sprite(1920 / 2, 1080 - 100, 'ship1')
     
     //creates a group for the missiles
     this.missileGroup = this.physics.add.group()
@@ -114,39 +114,31 @@ class GameSceneTwo extends Phaser.Scene {
     this.alienGroup = this.add.group()
     this.createAlien()
 
-    //Collisions between missiles and aliens
+       // Collisions Between Missiles and Aliens
     this.physics.add.collider(this.missileGroup, this.alienGroup, function (missileCollide, alienCollide) {
-      //destroys alien and missile
+      
+      // When Alien and Missile Collide They get Destroyed
       alienCollide.destroy()
+
+      // Plays Explosion Sound When They Get Destroyed
       missileCollide.destroy()
-      // explosion sound on contact
+
+      // Plays Explosion Sound When They Get Destroyed
       this.sound.play('explosion')
-      //add 1 point to the score
+
+      // Updates Score
       this.score = this.score + 1
       this.scoreText.setText('Score: ' + this.score.toString())
-      //creates 2 new aliens
-      this.createAlien()
-      this.createAlien()
-    // end game if 100 points is reached
-    if (this.score >= 100) {
-      // pause physics to stop new enemies from spawning
-      this.physics.pause()
-      // play win sound
-      this.sound.play('gameWin')
-      //destroy alien 
-      alienCollide.destroy()
-      // display and style win text
-      this.gameWinText = this.add.text(1920 / 2, 1080 / 2, 'You won!\nClick to play again.', this.gameWinTextStyle).setOrigin(0.5)
-      // make game win text clickable to take you back to gameScene
-      this.gameWinText.setInteractive({ useHandCursor: true })
-      this.gameWinText.on('pointerdown', () => this.scene.start('gameSceneTwo', this.score = 0))
-    }
-      }.bind(this))
 
-      // collisions between ship and alien
+      // Creates Two New Aliens After You Destroy One Alien
+      this.createAlien()
+      this.createAlien()
+    }.bind(this))
+      
+       // collisions between ship and alien
       this.physics.add.collider(this.ship, this.alienGroup, function (shipCollide, alienCollide) {
         // explosion sound on contact
-        this.sound.play('boom')
+        this.sound.play('bomb')
         // pause physics to stop new enemies for spawning
         this.physics.pause()
         // destroy cannon on contact with ant
@@ -162,7 +154,7 @@ class GameSceneTwo extends Phaser.Scene {
     this.physics.add.collider(this.ship1, this.alienGroup, function (ship1Collide, alienCollide) {
       // collisions between ship1 and alien
         // explosion sound on contact
-        this.sound.play('boom')
+        this.sound.play('bomb')
         // pause physics to stop new enemies for spawning
         this.physics.pause()
         // destroy cannon on contact with ant
@@ -179,11 +171,17 @@ class GameSceneTwo extends Phaser.Scene {
   
   update (time, delta) {
 
-    //Check if left arrow key is pressed
+    // Checks to See if User is Pressing Left Key
     const keyLeftObj = this.input.keyboard.addKey('LEFT')
+
+    // Checks to See if User is Pressing Right Key
+    const keyRightObj = this.input.keyboard.addKey('RIGHT')
+
+    // Checks to See if User is Pressing Up Key
+    const keyUpObj = this.input.keyboard.addKey('UP')
     
-    //Check if right arrow key is pressed
-    const keyrightObj = this.input.keyboard.addKey('RIGHT')
+		// Checks to See if User is Pressing Down Key
+		const keyDownObj = this.input.keyboard.addKey('DOWN')
     
     //Check if spacebar is pressed
     const keyspaceObj = this.input.keyboard.addKey('SPACE')
@@ -193,36 +191,110 @@ class GameSceneTwo extends Phaser.Scene {
     
     //Check if d key is pressed
     const keyDObj = this.input.keyboard.addKey('D')
+
+    //Check if w key is pressed
+    const keyWObj = this.input.keyboard.addKey('W')
+
+    //Check if S key is pressed
+    const keySObj = this.input.keyboard.addKey('S')
     
     //Check if shift is pressed
     const keyshiftObj = this.input.keyboard.addKey('SHIFT')
 
-    //Moving the ship to the left if the left arrow key is pressed
+    // If the User is Pressing Left Key
     if (keyLeftObj.isDown === true) {
-      this.ship.x -= 10
+
+      // Moves Ship to the Left (x-axis)
+      this.ship.x -= 15
+
+      // Prevents the Ship from Going Off Screen
       if (this.ship.x < 0) {
         this.ship.x = 1920
       }
+      this.ship.flipX = true
     }
-    //Moving the ship to the right if the right arrow key is pressed
-    if (keyrightObj.isDown === true) {
-      this.ship.x += 10
+
+    // If the User is Pressing Right Key
+    if (keyRightObj.isDown === true) {
+
+      // Moves Ship to the Right (x-axis)
+      this.ship.x += 15
+
+      // Prevents the Ship from Going Off Screen
       if (this.ship.x > 1920) {
         this.ship.x = 0
       }
+      this.ship.flipX = false
     }
+
+        // If the User is Pressing Left Key
+    if (keyUpObj.isDown === true) {
+
+      // Moves Ship to the Left (x-axis)
+      this.ship.y -= +15
+
+      // Prevents the Ship from Going Off Screen
+      if (this.ship.y < 0) {
+        this.ship.y = 1080;
+      }
+    }
+
+        // If the User is Pressing Left Key
+    if (keyDownObj.isDown === true) {
+
+      // Moves Ship to the Left (x-axis)
+      this.ship.y -= -15
+
+      // Prevents the Ship from Going Off Screen
+      if (this.ship.y > 1080) {
+        this.ship.y = 0;
+      }
+    }
+
+    // if statement for up arrow pressed
+    if (keyUpObj.isDown === true) {
+      this.ship.y -= 15
+      if (this.ship.y < 0) {
+        this.ship.y = 10
+      }
+    }
+    // if statement for down arrow pressed
+    if (keyDownObj.isDown === true) {
+      this.ship.y += 15
+      if (this.ship.y > 1080) {
+        this.ship.y = 1070
+      }
+    }
+    
     //Moving the ship to the left if A key is pressed
     if (keyAObj.isDown === true) {
       this.ship1.x -= 10
       if (this.ship1.x < 0) {
         this.ship1.x = 1920
       }
+      this.ship1.flipX = false      
     }
     //Moving the ship to the right if D key is pressed
     if (keyDObj.isDown === true) {
       this.ship1.x += 10
       if (this.ship1.x > 1920) {
         this.ship1.x = 0
+      }
+      this.ship1.flipX = true
+    }
+
+    // if statement for W pressed
+    if (keyWObj.isDown === true) {
+      this.ship1.y -= 15
+      if (this.ship1.y < 0) {
+        this.ship1.y = 10
+      }
+    }
+    // if statement for S pressed
+    if (keySObj.isDown === true) {
+      this.ship1.y += 15
+      if (this.ship1.y > 1080) {
+        this.ship1.y = 1070
       }
     }
         //Fire missile if the spacebar is pressed

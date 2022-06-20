@@ -4,6 +4,7 @@
 // Created on: April 2022
 // This file contains the JS functions for index.html
 
+//imports the scenes
 import SplashScene from "./splashScene.js"
 import TitleScene from "./titleScene.js"
 import MenuScene from "./menuScene.js"
