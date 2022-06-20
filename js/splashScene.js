@@ -11,7 +11,7 @@ class SplashScene extends Phaser.Scene {
     super({ key: 'splashScene' })
   }
 
-// Sets Splash Scene Background Colour (Black)
+// Sets Splash Scene Background Colour (Blue)
   init (data) {
     this.cameras.main.setBackgroundColor('#284fc8')
   }
