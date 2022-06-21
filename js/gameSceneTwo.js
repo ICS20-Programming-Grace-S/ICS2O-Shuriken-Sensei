@@ -310,14 +310,14 @@ class GameSceneTwo extends Phaser.Scene {
     if (keyWObj.isDown === true) {
       this.ship1.y -= 15
       if (this.ship1.y < 0) {
-        this.ship1.y = 10
+        this.ship1.y = 1080;
       }
     }
     // if statement for S pressed
     if (keySObj.isDown === true) {
       this.ship1.y += 15
       if (this.ship1.y > 1080) {
-        this.ship1.y = 1070
+        this.ship1.y = 0;
       }
     }
     
@@ -367,6 +367,7 @@ class GameSceneTwo extends Phaser.Scene {
       }
     })
 
+    // Re-Spawns Alien Once it Goes Off the Screen
     this.alienGroup.children.each(function (item) {
       if (item.y > 1080 || item.x < 0 || item.x > 1920) {
         item.y = -5

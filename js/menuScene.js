@@ -34,9 +34,6 @@ class MenuScene extends Phaser.Scene {
     // Loads Background Image
     this.load.image('menuSceneBackground', 'images/fruitNinjaMenuScene.webp')
 
-    // Loads Start Button
-    this.load.image('startButton', 'images/start.png')
-
     //  Loads Instruction Button
     this.load.image('instructionButton', 'images/instructionsButton.png')
 

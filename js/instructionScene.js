@@ -30,7 +30,7 @@ class InstructionScene extends Phaser.Scene {
     console.log("Instruction Scene")
 
     // Loads Instruction Scene Background
-    this.load.image('instructionSceneBackground', './images/fruitNinjaInstructionScene.jpg')
+    this.load.image('introductionSceneBackground', './images/fruitNinjaInstructionScene.jpg')
 
     // Loads Back Button
     this.load.image('backButton', './images/backButton.png')
@@ -41,7 +41,7 @@ class InstructionScene extends Phaser.Scene {
   create (data) {
 
     // Creates Background 
-    this.background = this.add.image(0, 0,'instructionSceneBackground').setScale(1.1)
+    this.background = this.add.image(0, 0,'introductionSceneBackground').setScale(1.1)
     this.background.setOrigin(0, 0)
     
     // Creates Back Button

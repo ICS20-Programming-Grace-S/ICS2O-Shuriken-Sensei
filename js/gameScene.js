@@ -99,7 +99,7 @@ class GameScene extends Phaser.Scene {
     // Creates Score That Will Appear on Screen
     this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
     
-    // Creates Home Button
+    //Creates Home Button
     this.homeButton = this.add.sprite(1750, (1080 / 7) + 1, 'homeButton').setScale(0.50)
     this.homeButton.setInteractive({ useHandCursor: true })
     this.homeButton.on('pointerdown', () => this.scene.start('menuScene', this.score = 0))
@@ -110,7 +110,7 @@ class GameScene extends Phaser.Scene {
     // Creates a Group for The Missiles
     this.missileGroup = this.physics.add.group()
 
-    // Creates a Group for The Missiles
+    // Creates a Group for The Aliens
     this.alienGroup = this.add.group()
     this.createAlien()
 
@@ -266,6 +266,7 @@ class GameScene extends Phaser.Scene {
       }
     })
 
+    // Re-Spawns Alien Once it Goes Off the Screen
     this.alienGroup.children.each(function (item) {
       if (item.y > 1080 || item.x < 0 || item.x > 1920) {
         item.y = -5
